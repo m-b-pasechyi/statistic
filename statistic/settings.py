@@ -19,9 +19,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '2bp4$ub5ts_bc2t2i7#*2*b=q9a3n0-d1#j4a5_yvv%+q*1&p0'
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -37,7 +34,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES':[
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'PAGE_SIZE':10
+}
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -103,18 +108,46 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
+
+DATE_INPUT_FORMATS=(
+    '%d.%m.%Y', '%Y-%m-%d', '%d.%m.%y',# '25.10.2006', '25.10.2006', '25.10.06'
+    '%d-%m-%Y', '%d/%m/%Y', '%d/%m/%y',# '25-10-2006', '25/10/2006', '25/10/06'
+    '%d %b %Y',# '25 Oct 2006', 
+    '%d %B %Y',# '25 October 2006', 
+)
+DATETIME_INPUT_FORMATS=(
+    '%d.%m.%y %H:%M', '%d.%m.%y %H:%M:%S','%d.%m.%Y %H:%M', '%d.%m.%Y %H:%M:%S','%Y-%m-%d %H:%M:%S',
+   '%Y-%m-%d %H:%M:%S.%f', '%Y-%m-%d%H:%M',
+  '%Y-%m-%d', '%m/%d/%Y %H:%M:%S', '%m/%d/%Y %H:%M:%S.%f',
+  '%m/%d/%Y %H:%M', '%m/%d/%Y', '%m/%d/%y %H:%M:%S',
+ '%m/%d/%y %H:%M:%S.%f', 
+ '%m/%d/%y %H:%M', '%m/%d/%y')
+DATE_FORMAT = 'd.m.Y'
+DATETIME_FORMAT = 'd.m.Y HH:MM:SS'
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'vtb/static'),]
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,'media')
+
+
+# добавление переменных из local_settings.py
+try:
+    from .secret import *
+except ImportError:
+    pass
