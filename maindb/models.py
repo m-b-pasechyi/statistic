@@ -64,7 +64,8 @@ class Budget(models.Model):
    enddate = models.DateTimeField(
       "Дата окончания действия записи",
       blank=True,
-      null=True
+      null=True,
+      validators=[]
       )
 
    status = models.CharField(
