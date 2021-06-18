@@ -6,25 +6,58 @@ import datetime
 
 
 
-def clear_of(data,subj='',target=None):
+def clear_of(data,subj='',target=None,key1=False,process_func=False):
+    """
+    Реверсивный алгоритм.
+    Очистка исходных данных от целевого значения c заменой,
+    с возможностью выбора ключа и обработки исходного значения:
+    data - исходные данные;
+    subj-строка для поиска, ну или любой другой тип;
+    target-данные для замены найденного;
+    key1- ключ для поиска;
+    process_func- функция обрабатывающаяя исходное значение
+    """
+    def process(value,process_func=process_func):
+        """
+         
+        """
+        if process_func:
+            try:
+                return process_func(value)
+            except:
+                pass
+        else:
+            return value
+
     if type(data)==dict:
         for key, value in data.items():
             if type(value) not in (set,tuple,dict,list):
-                if value == subj:
-                    data[key]=target
+                if key1:
+                    conditions = (process(value)==subj, key==key1)
+                    print(process(value),':', process(value).__class__)
+                else:
+                    conditions = (process(value)==subj,)
+                    print(process(value),':', process(value).__class__)
+                try:
+                    if all(conditions):
+                        data[key]=target
+                except:
+                    break
             else:
-                let_see(value)
+                clear_of(value, subj=subj,target=target,key1=key1,process_func=process_func)
     elif type(data) in (set,tuple,list):
         for i in data:
-            let_see(i)
+            clear_of(i, subj=subj,target=target,key1=key1,process_func=process_func)
 
 
 class BudgetSerializer(serializers.ModelSerializer):
     
-    enddate=serializers.DateField(required=False,allow_null=True)
+    enddate=serializers.DateTimeField(required=False,allow_null=True)
     
     def is_valid(self, raise_exception=False):
+        """ Перед основной валидацией добавлена очистка инициализирующих данных """
         clear_of(self.initial_data)
+        clear_of(self.initial_data,key1='parentcode',process_func=int,subj=0)
         return super().is_valid(raise_exception)
 
     
