@@ -1,0 +1,162 @@
+@import "nullstyle.css";
+
+
+
+
+body{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}    
+
+
+
+header{
+    
+    background:cyan;
+    display:flex;
+    justify-content: space-between;
+
+}
+.header__logo{
+    flex-basis: 250px;
+    margin: 1vw;
+
+}
+
+.header__logo img{
+    size:100%;
+}
+
+.header__title{
+    align-self: center;    
+}
+
+.header__enter{
+    display:flex;
+    flex-direction: column;
+    margin: 1vw;
+    justify-content: space-around;
+
+}
+.header__enter>a>button{
+    min-width: 150px;
+}
+
+.content{
+    display: flex;
+    flex-direction: column;
+
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: auto;
+    
+
+}
+.content .index{
+    display: flex;
+    justify-content: center;
+    
+}
+
+.content .index .buttons{
+    display: flex;
+    flex-direction: column;
+    flex-basis: 300px;
+    flex-grow:0.6;
+    margin: 1vw ;
+    
+}
+
+.content .index .buttons *{
+    margin: 4px ;
+    
+}
+
+.content .login{
+    display: flex;
+    justify-content: center;
+    
+    flex-basis: 300px;
+    flex-grow:0.6;
+    margin: 1vw ;
+    
+}
+
+.content .login .fields {
+    margin: 3vw ;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.content .login .fields p{
+    margin: 3vw;
+}
+
+.content .messages {
+    display:flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+
+}
+
+.content .userform {
+    display:flex;
+    justify-content:space-around;
+    flex-basis:100%;
+}
+
+.content .userform .field{
+    display:flex;
+    flex-direction: column;
+    margin: 1em;
+}
+
+.content .userform .field li{
+    list-style-type: none;
+
+}
+
+.content .userslist {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    text-align: center;
+    margin: 1vw;
+}
+
+.content .userslist .filter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 1vw;
+
+}
+
+.content .userslist .filter li{
+    list-style-type: none;
+
+}
+
+.content .pagination {
+    display: flex;
+    justify-content: center;
+    align-self:flex-end;
+}
+
+footer{
+    background:cyan;  
+    flex-grow: 0;
+    flex-shrink: 0;
+    flex-basis: auto;
+    display: flex;
+    justify-content: center;
+}
+
+.footer__ly{
+
+}

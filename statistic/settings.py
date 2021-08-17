@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'maindb',
     'own_parsers',
     'api_requests',
+    'pages',
 ]
 
 REST_FRAMEWORK = {
@@ -63,7 +64,7 @@ ROOT_URLCONF = 'statistic.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR,'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -144,7 +145,7 @@ DATETIME_FORMAT = 'd.m.Y HH:MM:SS'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'vtb/static'),]
+#STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static'),]
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,'media')
