@@ -1,6 +1,18 @@
 from django.db import models
 import datetime
 from django.contrib import admin
+from django.urls import reverse
+
+
+
+def make_surrogate(object):
+        """Генератор класса-заменителя для обхода добавления атрибута к выдаче @property-метода """
+        #Работает только для простых типов дпнных (для QuerySet не работает)
+        class Surrogate(type(object)):
+            def __setattr__(self,name,value):
+                return self.__dict__.update({name:value})
+        return Surrogate
+
 # Create your models here.
 class KBKStatus(models.TextChoices):
     ACTIVE = "ACTIVE", 'Актуальная запись'
@@ -127,6 +139,7 @@ class Budget(models.Model):
         verbose_name_plural = 'Справочники бюджетов'
         unique_together = ('code','startdate')
     
+    
     @property
     def level(self):    
         """Возврат уровня записи в общей иерархии от 1 до бесконечности, чем больше, тем ниже"""
@@ -140,16 +153,38 @@ class Budget(models.Model):
         return get_code_level()
     level.fget.short_description = "Иерархия записи"#для  отображения названия столбца в админке
     
+    
+    
     @property
     def fs_offsprings(self):
-
         """Потомки следующей ступени"""
-        if self.__class__.objects.filter(parentcode=self.pk).exists():
-            return self.__class__.objects.filter(parentcode=self.pk)
-
+        if self.__class__.objects.filter(parentcode=self.id).exists():
+            r = self.__class__.objects.filter(parentcode=self.id)
+            setattr(r,'verbose_name',"Потомки следующей ступени")
+            return r
+    fs_offsprings.fget.short_description = "Потомки следующей ступени"
     
-
-
+    
+    @property
+    def fs_offsprings_count(self):
+        """Колучество потомков следующей ступени"""
+        if self.__class__.objects.filter(parentcode=self.id).exists():
+            r= self.__class__.objects.filter(parentcode=self.id).count() 
+            r=make_surrogate(r)(r)
+            setattr(r,'verbose_name',"Колучество потомков следующей ступени")
+            return r
+    fs_offsprings_count.fget.short_description = "Колучество потомков следующей ступени"
+    
+    
+    @property
+    def fs_offsprings_url(self):
+        """Возврат url для получения списка потомков следующей ступени"""
+        r = reverse("pages:fs_offsprings", kwargs={"pk": self.pk})
+        r=make_surrogate(r)(r)
+        setattr(r,'verbose_name',"url для получения списка потомков следующей ступени")
+        return r
+    fs_offsprings_url.fget.short_description = "url для получения списка потомков следующей ступени"
+    
     def __str__(self):
         return f"{self.code}: {self.name}"
 

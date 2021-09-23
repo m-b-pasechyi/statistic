@@ -20,22 +20,6 @@
         {%block title%}
         {%endblock title%}
         </div>
-
-        <div class="header__enter">
-            {% if user.first_name or user.last_name%}
-            <p>{{user.first_name}} {{user.last_name}}</p>
-            {% else %}
-            <p>{{user}}</p>
-            {% endif %}
-            
-            {% for  group in user.groups.all %}
-            <p>{{group.name}}</p>
-            {% endfor %}
-            {% if user.is_authenticated %}
-            <a href="{%url 'pages:logout'%}"><button>Выход</button></a>
-            {% endif %}
-
-        </div>
     </header>
     <div class="content">
     {% block content %}
@@ -47,6 +31,7 @@
         </div>
     </footer>
 
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static '/js/for_pagination.js' %}"> </script>
 </body>
 </html>
